@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FlocusApp: App {
@@ -13,5 +14,6 @@ struct FlocusApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: TaskModel.self)
     }
 }
