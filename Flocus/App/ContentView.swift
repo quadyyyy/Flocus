@@ -15,8 +15,7 @@ struct ContentView: View {
             }
             
             Tab("Calendar", systemImage: "calendar") {
-                // calendar view
-                EmptyView()
+                CalendarContainerView()
             }
             
             Tab("Mindfulness", systemImage: "figure.mind.and.body") {

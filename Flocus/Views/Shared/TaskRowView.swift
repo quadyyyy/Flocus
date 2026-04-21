@@ -25,9 +25,12 @@ struct TaskRowView: View {
                     .strikethrough(task.isCompleted)
                     .foregroundStyle(task.isCompleted ? .secondary : .primary)
 
-                Text(task.dueDate, style: .date)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 4) {
+                    Text(task.dueDate, style: .date)
+                    Text(task.dueDate, style: .time)
+                }
+                .font(.caption)
+                .foregroundStyle(task.dueDate < .now ? .red : .secondary)
             }
             Spacer()
             Text("\(task.tag.rawValue)")

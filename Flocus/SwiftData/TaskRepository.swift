@@ -28,9 +28,11 @@ class TaskRepository: TaskRepositoryProtocol {
     
     func add(_ task: TaskModel) {
         context.insert(task)
+        try? context.save()
     }
     
     func delete(_ task: TaskModel) {
         context.delete(task)
+        try? context.save()
     }
 }
