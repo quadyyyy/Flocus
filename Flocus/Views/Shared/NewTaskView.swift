@@ -64,8 +64,8 @@ struct NewTaskView: View {
                     .tint(.blue)
                 }
             }
+            .navigationBarBackButtonHidden()
         }
-        
     }
 }
 

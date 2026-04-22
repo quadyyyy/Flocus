@@ -19,6 +19,9 @@ struct CalendarContainerView: View {
             .onAppear {
                 viewmodel.reloadTasks(tasks)
             }
+            .onDisappear {
+                viewmodel.selectedDate = nil
+            }
             .onChange(of: tasks) {
                 viewmodel.reloadTasks(tasks)
             }

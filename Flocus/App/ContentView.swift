@@ -18,8 +18,8 @@ struct ContentView: View {
                 CalendarContainerView()
             }
             
-            Tab("Mindfulness", systemImage: "figure.mind.and.body") {
-                // mindfulness view
+            Tab("Pomodoro", systemImage: "timer") {
+                // pomodoro view
                 EmptyView()
             }
             

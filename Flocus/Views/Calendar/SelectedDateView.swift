@@ -23,7 +23,9 @@ struct SelectedDateView: View {
         NavigationStack {
             List {
                 ForEach(tasksForDate) { task in
-                    TaskRowView(task: task)
+                    NavigationLink(value: task) {
+                        TaskRowView(task: task)
+                    }
                 }
                 .onDelete { indexSet in
                     indexSet.forEach { viewModel.deleteTask(tasksForDate[$0]) }
@@ -57,6 +59,9 @@ struct SelectedDateView: View {
                     viewModel.addTask(task)
                     isAddingTask = false
                 }
+            }
+            .navigationDestination(for: TaskModel.self) { task in
+                DetailedTaskView(task: task)
             }
         }
     }

@@ -11,13 +11,15 @@ import SwiftData
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel = TodayViewModel()
-    @State var isSheetPresented = false
+    @State private var isSheetPresented = false
         
     var body: some View {
         NavigationStack {
             List {
                 ForEach(viewModel.tasks) { task in
-                    TaskRowView(task: task)
+                    NavigationLink(value: task) {
+                        TaskRowView(task: task)
+                    }
                 }
                 .onDelete { indexSet in
                     indexSet.forEach { viewModel.deleteTask(viewModel.tasks[$0]) }
@@ -39,6 +41,9 @@ struct TodayView: View {
             .sheet(isPresented: $isSheetPresented) {
                 NewTaskView(title: "", description: "", dueDate: Date()) { task in
                     viewModel.addTask(task)}
+            }
+            .navigationDestination(for: TaskModel.self) { task in
+                DetailedTaskView(task: task)
             }
         }
         

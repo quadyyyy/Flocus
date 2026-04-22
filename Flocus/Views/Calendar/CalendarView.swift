@@ -34,6 +34,12 @@ struct CalendarView: UIViewRepresentable {
         let datesToReload = Array(Set(newDates + context.coordinator.previousDates))
         context.coordinator.previousDates = newDates
         uiView.reloadDecorations(forDateComponents: datesToReload, animated: false)
+
+        if viewModel.selectedDate == nil,
+           let selection = uiView.selectionBehavior as? UICalendarSelectionSingleDate,
+           selection.selectedDate != nil {
+            selection.setSelected(nil, animated: false)
+        }
     }
 
     func makeCoordinator() -> Coordinator {

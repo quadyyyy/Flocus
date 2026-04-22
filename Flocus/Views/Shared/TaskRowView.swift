@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TaskRowView: View {
-    var task: TaskModel
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var task: TaskModel
 
     var body: some View {
         HStack(spacing: 12) {
@@ -17,6 +19,7 @@ struct TaskRowView: View {
                 .font(.title2)
                 .onTapGesture {
                     task.isCompleted.toggle()
+                    try? modelContext.save()
                 }
                 .animation(.easeInOut(duration: 0.2), value: task.isCompleted)
 
