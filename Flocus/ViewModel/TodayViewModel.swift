@@ -17,16 +17,32 @@ class TodayViewModel: ObservableObject {
 
     func setup(repository: TaskRepositoryProtocol) {
         self.repository = repository
-        tasks = (try? repository.fetchAll()) ?? []
+        reload()
     }
-    
+
     func addTask(_ task: TaskModel) {
         repository?.add(task)
-        tasks = (try? repository?.fetchAll()) ?? []
+        reload()
     }
 
     func deleteTask(_ task: TaskModel) {
         repository?.delete(task)
-        tasks = (try? repository?.fetchAll()) ?? []
+        reload()
+    }
+
+    private func reload() {
+        let all = (try? repository?.fetchAll()) ?? []
+        tasks = all.filter(isVisibleToday)
+    }
+
+    private func isVisibleToday(_ task: TaskModel) -> Bool {
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: .now)
+        let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+
+        let isToday = task.dueDate >= startOfToday && task.dueDate < startOfTomorrow
+        let isOverdue = task.dueDate < startOfToday && !task.isCompleted
+
+        return isToday || isOverdue
     }
 }

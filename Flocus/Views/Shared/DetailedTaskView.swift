@@ -10,6 +10,7 @@ import SwiftData
 
 struct DetailedTaskView: View {
     @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Bindable var task: TaskModel
     
     var body: some View {
@@ -39,6 +40,7 @@ struct DetailedTaskView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     try? modelContext.save()
+                    dismiss()
                 } label: {
                     Image(systemName: "checkmark")
                 }

@@ -8,15 +8,16 @@
 import SwiftUI
 import SwiftData
 
+// TODO: - Add viewmodel
 struct SelectedDateView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     var selectedDate: SelectedDate
-    @ObservedObject var viewModel: TodayViewModel
+    var allTasks: [TaskModel]
     @State var isAddingTask = false
 
     var tasksForDate: [TaskModel] {
-        viewModel.tasks.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate.date) }
+        allTasks.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate.date) }
     }
 
     var body: some View {
@@ -28,15 +29,12 @@ struct SelectedDateView: View {
                     }
                 }
                 .onDelete { indexSet in
-                    indexSet.forEach { viewModel.deleteTask(tasksForDate[$0]) }
+                    indexSet.forEach { modelContext.delete(tasksForDate[$0]) }
+                    try? modelContext.save()
                 }
             }
             .navigationTitle(selectedDate.date.formatted(.dateTime.day().month(.wide)))
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                  guard viewModel.tasks.isEmpty else { return }
-                  viewModel.setup(repository: TaskRepository(context: modelContext))
-              }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -56,7 +54,8 @@ struct SelectedDateView: View {
             }
             .navigationDestination(isPresented: $isAddingTask) {
                 NewTaskView(title: "", description: "", dueDate: selectedDate.date) { task in
-                    viewModel.addTask(task)
+                    modelContext.insert(task)
+                    try? modelContext.save()
                     isAddingTask = false
                 }
             }
@@ -74,7 +73,7 @@ struct SelectedDateView: View {
     context.insert(TaskModel(title: "Buy groceries", details: "Milk, eggs", dueDate: today, tag: .home))
     context.insert(TaskModel(title: "Finish report", details: "", dueDate: today, tag: .work))
     context.insert(TaskModel(title: "Read Swift docs", details: "", dueDate: today, tag: .study))
-    let viewModel = TodayViewModel()
-    return SelectedDateView(selectedDate: SelectedDate(date: today), viewModel: viewModel)
+    let tasks = try! context.fetch(FetchDescriptor<TaskModel>())
+    return SelectedDateView(selectedDate: SelectedDate(date: today), allTasks: tasks)
         .modelContainer(container)
 }
