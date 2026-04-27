@@ -2,7 +2,7 @@
 //  NewTaskView.swift
 //  Flocus
 //
-//  Created by Куприянов Тимофей on 17.04.2026.
+//  Created by Timofei Kupriianov on 17.04.2026.
 //
 
 import SwiftUI

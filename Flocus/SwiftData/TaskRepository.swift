@@ -2,7 +2,7 @@
 //  TaskRepository.swift
 //  Flocus
 //
-//  Created by Куприянов Тимофей on 18.04.2026.
+//  Created by Timofei Kupriianov on 18.04.2026.
 //
 
 import Foundation

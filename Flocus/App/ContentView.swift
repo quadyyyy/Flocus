@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  Flocus
 //
-//  Created by Куприянов Тимофей on 17.04.2026.
+//  Created by Timofei Kupriianov on 17.04.2026.
 //
 
 import SwiftUI
@@ -19,8 +19,7 @@ struct ContentView: View {
             }
             
             Tab("Pomodoro", systemImage: "timer") {
-                // pomodoro view
-                EmptyView()
+                PomodoroView()
             }
             
             Tab("Account", systemImage: "person") {
