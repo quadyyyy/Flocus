@@ -34,7 +34,7 @@ struct CalendarContainerView: View {
                     viewmodel.reloadTasks(tasks)
                 }
                 .sheet(item: $viewmodel.selectedDate) { date in
-                    SelectedDateView(selectedDate: date, allTasks: tasks)
+                    SelectedDateView(selectedDate: date)
                 }
                 .padding(.horizontal)
         }
