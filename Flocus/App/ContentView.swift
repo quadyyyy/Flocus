@@ -23,8 +23,7 @@ struct ContentView: View {
             }
             
             Tab("Account", systemImage: "person") {
-                // account view
-                EmptyView()
+                AccountView()
             }
         }
     }

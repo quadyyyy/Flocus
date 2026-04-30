@@ -37,7 +37,12 @@ class PomodoroViewModel: ObservableObject {
     @Published var phase: PomodoroPhase = PomodoroPhase.focus
     @Published var isRunning: Bool = false
     @Published var completedSessions: Int = 0
-    
+    private var statsRepository: StatsRepositoryProtocol?
+
+    func setup(statsRepository: StatsRepositoryProtocol) {
+        self.statsRepository = statsRepository
+    }
+
     var timeString: String {
         let minutes = timeRemaining / 60
         let seconds = timeRemaining % 60
@@ -63,6 +68,10 @@ class PomodoroViewModel: ObservableObject {
                 
                 timeRemaining -= 1
             }
+            if phase == .focus {
+                statsRepository?.incrementFocusSession()
+            }
+            
             advance()
         }
     }

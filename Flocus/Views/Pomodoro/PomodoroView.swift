@@ -96,6 +96,9 @@ struct PomodoroView: View {
             .padding(.horizontal)
             .padding(.bottom, 40)
         }
+        .onAppear {
+            viewModel.setup(statsRepository: StatsRepository())
+        }
         .onChange(of: viewModel.phase) {
             viewModel.reset()
             timerStarted = false

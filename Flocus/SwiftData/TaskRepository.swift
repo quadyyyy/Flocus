@@ -12,6 +12,7 @@ protocol TaskRepositoryProtocol {
     func fetchAll() throws -> [TaskModel]
     func add(_ task: TaskModel)
     func delete(_ task: TaskModel)
+    func save()
 }
 
 class TaskRepository: TaskRepositoryProtocol {
@@ -33,6 +34,10 @@ class TaskRepository: TaskRepositoryProtocol {
     
     func delete(_ task: TaskModel) {
         context.delete(task)
+        try? context.save()
+    }
+
+    func save() {
         try? context.save()
     }
 }

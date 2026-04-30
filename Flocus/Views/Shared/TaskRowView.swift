@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct TaskRowView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Bindable var task: TaskModel
+    let task: TaskModel
+    var onToggle: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -18,8 +17,7 @@ struct TaskRowView: View {
                 .foregroundStyle(task.isCompleted ? .green : .secondary)
                 .font(.title2)
                 .onTapGesture {
-                    task.isCompleted.toggle()
-                    try? modelContext.save()
+                    onToggle()
                 }
                 .animation(.easeInOut(duration: 0.2), value: task.isCompleted)
 
@@ -53,8 +51,8 @@ struct TaskRowView: View {
     let task1 = TaskModel(title: "title 1", details: "", dueDate: Date(), tag: .home)
     let task2 = TaskModel(title: "title 2", details: "", dueDate: Date(), tag: .work)
     VStack {
-        TaskRowView(task: task1)
-        TaskRowView(task: task2)
+        TaskRowView(task: task1) {}
+        TaskRowView(task: task2) {}
     }
     .padding()
 }

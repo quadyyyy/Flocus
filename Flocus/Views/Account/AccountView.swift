@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct AccountView: View {
+    @AppStorage("completedTasksCount") private var completedCount: Int = 0
     var body: some View {
-
+        VStack {
+            Text("Completed tasks \(completedCount)")
+        }
     }
 }
 

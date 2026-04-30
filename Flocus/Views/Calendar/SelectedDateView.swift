@@ -20,7 +20,9 @@ struct SelectedDateView: View {
             List {
                 ForEach(viewModel.tasks) { task in
                     NavigationLink(value: task) {
-                        TaskRowView(task: task)
+                        TaskRowView(task: task) {
+                            viewModel.toggleTask(task)
+                        }
                     }
                 }
                 .onDelete { indexSet in
@@ -30,7 +32,7 @@ struct SelectedDateView: View {
             .navigationTitle(selectedDate.date.formatted(.dateTime.day().month(.wide)))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                viewModel.setup(repository: TaskRepository(context: modelContext), date: selectedDate.date)
+                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: StatsRepository(), date: selectedDate.date)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

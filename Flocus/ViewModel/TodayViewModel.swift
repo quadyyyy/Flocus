@@ -12,11 +12,13 @@ import SwiftData
 class TodayViewModel: ObservableObject {
     @Published var tasks: [TaskModel] = []
     private var repository: TaskRepositoryProtocol?
+    private var statsRepository: StatsRepositoryProtocol?
 
     init() {}
 
-    func setup(repository: TaskRepositoryProtocol) {
+    func setup(repository: TaskRepositoryProtocol, statsRepository: StatsRepositoryProtocol) {
         self.repository = repository
+        self.statsRepository = statsRepository
         reload()
     }
 
@@ -27,6 +29,14 @@ class TodayViewModel: ObservableObject {
 
     func deleteTask(_ task: TaskModel) {
         repository?.delete(task)
+        reload()
+    }
+    
+    func toggleTask(_ task: TaskModel) {
+        task.isCompleted.toggle()
+        repository?.save()
+        task.isCompleted ? statsRepository?.incrementCompletedTask()
+                         : statsRepository?.decrementCompletedTask()
         reload()
     }
 

@@ -18,7 +18,9 @@ struct TodayView: View {
             List {
                 ForEach(viewModel.tasks) { task in
                     NavigationLink(value: task) {
-                        TaskRowView(task: task)
+                        TaskRowView(task: task) {
+                            viewModel.toggleTask(task)
+                        }
                     }
                 }
                 .onDelete { indexSet in
@@ -27,7 +29,7 @@ struct TodayView: View {
             }
             .navigationTitle("What's up for today?")
             .onAppear {
-                viewModel.setup(repository: TaskRepository(context: modelContext))
+                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: StatsRepository())
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

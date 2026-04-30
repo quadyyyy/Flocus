@@ -32,7 +32,7 @@ class TaskModel {
     var dueDate: Date
     var isCompleted: Bool
     var tag: Tags
-    
+
     init(title: String, details: String, dueDate: Date, isCompleted: Bool = false, tag: Tags = .none) {
         self.title = title
         self.details = details
