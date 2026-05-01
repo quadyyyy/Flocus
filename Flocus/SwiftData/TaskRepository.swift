@@ -13,6 +13,7 @@ protocol TaskRepositoryProtocol {
     func add(_ task: TaskModel)
     func delete(_ task: TaskModel)
     func save()
+    func deleteAll()
 }
 
 class TaskRepository: TaskRepositoryProtocol {
@@ -38,6 +39,11 @@ class TaskRepository: TaskRepositoryProtocol {
     }
 
     func save() {
+        try? context.save()
+    }
+    
+    func deleteAll() {
+        try? context.delete(model: TaskModel.self)
         try? context.save()
     }
 }

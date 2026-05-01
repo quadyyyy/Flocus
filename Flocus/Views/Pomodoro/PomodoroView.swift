@@ -59,7 +59,7 @@ struct PomodoroView: View {
                 }
             }
             .padding(.horizontal, 55)
-            .padding(.top, 24)
+            .padding(.top, 50)
             
             Spacer()
             

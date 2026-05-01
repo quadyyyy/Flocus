@@ -22,8 +22,8 @@ struct ContentView: View {
                 PomodoroView()
             }
             
-            Tab("Account", systemImage: "person") {
-                AccountView()
+            Tab("Profile", systemImage: "person") {
+                ProfileView()
             }
         }
     }

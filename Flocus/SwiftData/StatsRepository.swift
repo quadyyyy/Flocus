@@ -13,6 +13,7 @@ protocol StatsRepositoryProtocol {
     func incrementCompletedTask()
     func decrementCompletedTask()
     func incrementFocusSession()
+    func resetAll()
 }
 
 @MainActor
@@ -33,5 +34,10 @@ class StatsRepository: StatsRepositoryProtocol {
     func incrementFocusSession() {
         let current = UserDefaults.standard.integer(forKey: focusSessionsKey)
         UserDefaults.standard.set(current + 1, forKey: focusSessionsKey)
+    }
+    
+    func resetAll() {
+        UserDefaults.standard.set(0, forKey: completedTasksKey)
+        UserDefaults.standard.set(0, forKey: focusSessionsKey)
     }
 }
