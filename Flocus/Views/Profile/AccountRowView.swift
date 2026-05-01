@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AccountRowView: View {
+    @AppStorage("username") var userName: String = "User"
+    
     var body: some View {
         HStack(spacing: 14) {
             Image("placeholderAvatar")
@@ -17,7 +19,7 @@ struct AccountRowView: View {
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Placeholder Name")
+                Text("\(userName)")
                     .font(.title3).bold()
                 Text("Edit your profile")
                     .font(.subheadline)
