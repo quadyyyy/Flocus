@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AccountInfoView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var alertIsPresented: Bool = false
     @AppStorage("username") var username: String = "User"
 
@@ -73,8 +75,9 @@ struct AccountInfoView: View {
                 Button(role: .destructive) {
                     StatsRepository().resetAll()
                     TaskRepository(context: modelContext).deleteAll()
+                    dismiss()
                 } label: {
-                    Text("Delete")
+                    Text("Restore")
                 }
             } message: {
                 Text("Are you sure you want to reset all data?")

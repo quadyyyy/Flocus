@@ -57,7 +57,7 @@ struct ProfileView: View {
                             icon: "flame.fill",
                             iconColor: .red,
                             title: "Your streak",
-                            value: "streak",
+                            value: "\(viewModel.streak)",
                             subtitle: "current"
                         )
                     }

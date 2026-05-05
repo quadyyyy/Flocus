@@ -35,8 +35,12 @@ class TodayViewModel: ObservableObject {
     func toggleTask(_ task: TaskModel) {
         task.isCompleted.toggle()
         repository?.save()
-        task.isCompleted ? statsRepository?.incrementCompletedTask()
-                         : statsRepository?.decrementCompletedTask()
+        if task.isCompleted {
+            statsRepository?.incrementCompletedTask()
+            statsRepository?.addToArray(Calendar.current.dateComponents([.year, .month, .day], from: Date()))
+        } else {
+            statsRepository?.decrementCompletedTask()
+        }
         reload()
     }
 
@@ -56,3 +60,4 @@ class TodayViewModel: ObservableObject {
         return isToday || isOverdue
     }
 }
+

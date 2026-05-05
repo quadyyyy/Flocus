@@ -23,7 +23,7 @@ class ProfileViewModel: ObservableObject {
 
     @Published var completedTasks: Int = 0
     @Published var focusSessions: Int = 0
-    //@Published var currentStreak: Int = 0
+    @Published var streak: Int = 0
     
     var achievements: [Achievement] {
         [
@@ -45,10 +45,35 @@ class ProfileViewModel: ObservableObject {
         let mins = minutes % 60
         return hours > 0 ? "\(hours)h \(mins)m" : "\(mins)m"
     }
+    
+    func computeStreak(_ array: Array<DateComponents>) -> Int {
+        let calendar = Calendar.current
+        let today = calendar.dateComponents([.year, .month, .day], from: .now)
+        
+        let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: .now)!
+        var current = calendar.dateComponents([.year, .month, .day], from: yesterdayDate)
+        
+        let dates = Set(array)
+        var streak: Int = 0
+        
+        while dates.contains(current) {
+            streak += 1
+            let date = calendar.date(from: current)!
+            current = calendar.dateComponents([.year, .month, .day], from: calendar.date(byAdding: .day, value: -1, to: date)!)
+        }
+        
+        if dates.contains(today) {
+            streak += 1
+        }
+        
+        return streak
+    }
 
     func load() {
         completedTasks = UserDefaults.standard.integer(forKey: "completedTasksCount")
         focusSessions = UserDefaults.standard.integer(forKey: "focusSessionsCount")
-        //currentStreak = stats.currentStreak
+        let dates = UserDefaults.standard.getArray(DateComponents.self, forKey: "streakDates")
+        streak = computeStreak(dates)
     }
 }
+
