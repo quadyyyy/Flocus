@@ -10,9 +10,9 @@ import SwiftData
 
 protocol TaskRepositoryProtocol {
     func fetchAll() throws -> [TaskModel]
-    func add(_ task: TaskModel)
-    func delete(_ task: TaskModel)
-    func save()
+    func add(_ task: TaskModel) throws
+    func delete(_ task: TaskModel) throws
+    func save() throws
     func deleteAll()
 }
 
@@ -28,18 +28,18 @@ class TaskRepository: TaskRepositoryProtocol {
         return try context.fetch(descriptor)
     }
     
-    func add(_ task: TaskModel) {
+    func add(_ task: TaskModel) throws {
         context.insert(task)
-        try? context.save()
+        try context.save()
     }
     
-    func delete(_ task: TaskModel) {
+    func delete(_ task: TaskModel) throws {
         context.delete(task)
-        try? context.save()
+        try context.save()
     }
 
-    func save() {
-        try? context.save()
+    func save() throws {
+        try context.save()
     }
     
     func deleteAll() {

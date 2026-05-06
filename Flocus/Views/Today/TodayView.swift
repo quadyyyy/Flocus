@@ -47,6 +47,14 @@ struct TodayView: View {
             .navigationDestination(for: TaskModel.self) { task in
                 DetailedTaskView(task: task)
             }
+            .alert("Error", isPresented: Binding (
+                get: { viewModel.errorMessage != nil },
+                set: { if !$0 { viewModel.errorMessage = nil } })
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
         }
         
     }

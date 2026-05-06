@@ -11,6 +11,7 @@ import SwiftData
 
 class TodayViewModel: ObservableObject {
     @Published var tasks: [TaskModel] = []
+    @Published var errorMessage: String? = nil
     private var repository: TaskRepositoryProtocol?
     private var statsRepository: StatsRepositoryProtocol?
 
@@ -23,18 +24,30 @@ class TodayViewModel: ObservableObject {
     }
 
     func addTask(_ task: TaskModel) {
-        repository?.add(task)
+        do {
+            try repository?.add(task)
+        } catch {
+            errorMessage = "Failed to add task"
+        }
         reload()
     }
 
     func deleteTask(_ task: TaskModel) {
-        repository?.delete(task)
+        do {
+            try repository?.delete(task)
+        } catch {
+            errorMessage = "Failed to delete task"
+        }
         reload()
     }
     
     func toggleTask(_ task: TaskModel) {
         task.isCompleted.toggle()
-        repository?.save()
+        do {
+            try repository?.save()
+        } catch {
+            errorMessage = "Failed to save task data"
+        }
         if task.isCompleted {
             statsRepository?.incrementCompletedTask()
             statsRepository?.addToArray(Calendar.current.dateComponents([.year, .month, .day], from: Date()))

@@ -11,6 +11,7 @@ import SwiftData
 
 class SelectedDateViewModel: ObservableObject {
     @Published var tasks: [TaskModel] = []
+    @Published var errorMessage: String? = nil
     private var repository: TaskRepositoryProtocol?
     private var statsRepository: StatsRepositoryProtocol?
     private var date: Date = .now
@@ -25,18 +26,30 @@ class SelectedDateViewModel: ObservableObject {
     }
 
     func addTask(_ task: TaskModel) {
-        repository?.add(task)
+        do {
+            try repository?.add(task)
+        } catch {
+            errorMessage = "Failed to add task"
+        }
         reload()
     }
 
     func deleteTask(_ task: TaskModel) {
-        repository?.delete(task)
+        do {
+            try repository?.delete(task)
+        } catch {
+            errorMessage = "Failed to delete task"
+        }
         reload()
     }
 
     func toggleTask(_ task: TaskModel) {
         task.isCompleted.toggle()
-        repository?.save()
+        do {
+            try repository?.save()
+        } catch {
+            errorMessage = "Failed to save task data"
+        }
         task.isCompleted ? statsRepository?.incrementCompletedTask()
                          : statsRepository?.decrementCompletedTask()
         reload()
