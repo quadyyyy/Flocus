@@ -45,21 +45,26 @@ class TodayViewModel: ObservableObject {
         task.isCompleted.toggle()
         do {
             try repository?.save()
+            if task.isCompleted {
+                statsRepository?.incrementCompletedTask()
+                statsRepository?.addToArray(Calendar.current.dateComponents([.year, .month, .day], from: Date()))
+            } else {
+                statsRepository?.decrementCompletedTask()
+            }
         } catch {
             errorMessage = "Failed to save task data"
-        }
-        if task.isCompleted {
-            statsRepository?.incrementCompletedTask()
-            statsRepository?.addToArray(Calendar.current.dateComponents([.year, .month, .day], from: Date()))
-        } else {
-            statsRepository?.decrementCompletedTask()
         }
         reload()
     }
 
     private func reload() {
-        let all = (try? repository?.fetchAll()) ?? []
-        tasks = all.filter(isVisibleToday)
+        guard errorMessage == nil else { return }
+        do {
+            let all = (try repository?.fetchAll()) ?? []
+            tasks = all.filter(isVisibleToday)
+        } catch {
+            errorMessage = "Failed to reload data"
+        }
     }
 
     private func isVisibleToday(_ task: TaskModel) -> Bool {

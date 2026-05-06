@@ -47,16 +47,25 @@ class SelectedDateViewModel: ObservableObject {
         task.isCompleted.toggle()
         do {
             try repository?.save()
+            if task.isCompleted {
+                statsRepository?.incrementCompletedTask()
+                statsRepository?.addToArray(Calendar.current.dateComponents([.year, .month, .day], from: Date()))
+            } else {
+                statsRepository?.decrementCompletedTask()
+            }
         } catch {
             errorMessage = "Failed to save task data"
         }
-        task.isCompleted ? statsRepository?.incrementCompletedTask()
-                         : statsRepository?.decrementCompletedTask()
         reload()
     }
 
     private func reload() {
-        let all = (try? repository?.fetchAll()) ?? []
-        tasks = all.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: date) }
+        guard errorMessage == nil else { return }
+        do {
+            let all = (try repository?.fetchAll()) ?? []
+            tasks = all.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: date) }
+        } catch {
+            errorMessage = "Failed to reload data"
+        }
     }
 }
