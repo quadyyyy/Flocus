@@ -13,20 +13,22 @@ struct AccountInfoView: View {
     
     @State private var alertIsPresented: Bool = false
     @AppStorage("username") var username: String = "User"
+    @AppStorage("avatar") var avatar: String = "avatar1"
+    @State private var isSheetPresented: Bool = false
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Image("placeholderAvatar")
+                Image(avatar)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
                 Spacer()
                 Button {
-                    // TODO: - add avatar change
+                    isSheetPresented.toggle()
                 } label: {
-                    Text("Edit avatar")
+                    Text("Choose avatar")
                 }
 
                 Form {
@@ -77,10 +79,13 @@ struct AccountInfoView: View {
                     TaskRepository(context: modelContext).deleteAll()
                     dismiss()
                 } label: {
-                    Text("Restore")
+                    Text("Reset")
                 }
             } message: {
                 Text("Are you sure you want to reset all data?")
+            }
+            .sheet(isPresented: $isSheetPresented) {
+                AvatarPickerView()
             }
         }
     }

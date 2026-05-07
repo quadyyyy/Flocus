@@ -9,10 +9,11 @@ import SwiftUI
 
 struct AccountRowView: View {
     @AppStorage("username") var userName: String = "User"
+    @AppStorage("avatar") var avatar: String = "avatar1"
     
     var body: some View {
         HStack(spacing: 14) {
-            Image("placeholderAvatar")
+            Image(avatar)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 60, height: 60)
