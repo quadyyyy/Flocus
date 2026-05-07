@@ -8,22 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
     var body: some View {
-        TabView {
-            Tab("Today", systemImage: "list.bullet.rectangle") {
-                TodayView()
-            }
-            
-            Tab("Calendar", systemImage: "calendar") {
-                CalendarContainerView()
-            }
-            
-            Tab("Pomodoro", systemImage: "timer") {
-                PomodoroView()
-            }
-            
-            Tab("Profile", systemImage: "person") {
-                ProfileView()
+        if !isOnboardingCompleted {
+            FirstOnboardingView()
+        } else {
+            TabView {
+                Tab("Today", systemImage: "list.bullet.rectangle") {
+                    TodayView()
+                }
+                
+                Tab("Calendar", systemImage: "calendar") {
+                    CalendarContainerView()
+                }
+                
+                Tab("Pomodoro", systemImage: "timer") {
+                    PomodoroView()
+                }
+                
+                Tab("Profile", systemImage: "person") {
+                    ProfileView()
+                }
             }
         }
     }
