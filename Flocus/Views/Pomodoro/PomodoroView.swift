@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PomodoroView: View {
+    @EnvironmentObject private var statsRepository: StatsRepository
     @StateObject var viewModel = PomodoroViewModel()
     @State private var timerStarted = false
     var body: some View {
@@ -97,7 +98,7 @@ struct PomodoroView: View {
             .padding(.bottom, 40)
         }
         .onAppear {
-            viewModel.setup(statsRepository: StatsRepository())
+            viewModel.setup(statsRepository: statsRepository)
         }
         .onChange(of: viewModel.phase) {
             viewModel.reset()

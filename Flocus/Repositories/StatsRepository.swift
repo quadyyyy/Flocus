@@ -7,6 +7,7 @@
 
 
 import Foundation
+import Combine
 
 @MainActor
 protocol StatsRepositoryProtocol {
@@ -19,7 +20,7 @@ protocol StatsRepositoryProtocol {
 }
 
 @MainActor
-class StatsRepository: StatsRepositoryProtocol {
+class StatsRepository: ObservableObject, StatsRepositoryProtocol {
     private let completedTasksKey = "completedTasksCount"
     private let focusSessionsKey = "focusSessionsCount"
     private let streakDatesArrayKey = "streakDates"

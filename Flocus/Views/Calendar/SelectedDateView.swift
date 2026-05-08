@@ -11,6 +11,7 @@ import SwiftData
 struct SelectedDateView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var statsRepository: StatsRepository
     var selectedDate: SelectedDate
     @StateObject private var viewModel = SelectedDateViewModel()
     @State var isAddingTask = false
@@ -32,7 +33,7 @@ struct SelectedDateView: View {
             .navigationTitle(selectedDate.date.formatted(.dateTime.day().month(.wide)))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: StatsRepository(), date: selectedDate.date)
+                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: statsRepository, date: selectedDate.date)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

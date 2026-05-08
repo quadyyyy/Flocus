@@ -10,6 +10,7 @@ import SwiftUI
 struct AccountInfoView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var statsRepository: StatsRepository
     
     @State private var alertIsPresented: Bool = false
     @AppStorage("username") var username: String = "User"
@@ -75,7 +76,7 @@ struct AccountInfoView: View {
             .navigationBarTitleDisplayMode(.inline)
             .alert("Danger zone", isPresented: $alertIsPresented) {
                 Button(role: .destructive) {
-                    StatsRepository().resetAll()
+                    statsRepository.resetAll()
                     TaskRepository(context: modelContext).deleteAll()
                     dismiss()
                 } label: {
@@ -93,5 +94,6 @@ struct AccountInfoView: View {
 
 #Preview {
     AccountInfoView()
+        .environmentObject(StatsRepository())
 }
 

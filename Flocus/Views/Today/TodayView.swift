@@ -10,6 +10,7 @@ import SwiftData
 
 struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var statsRepository: StatsRepository
     @StateObject private var viewModel = TodayViewModel()
     @State private var isSheetPresented = false
         
@@ -29,7 +30,7 @@ struct TodayView: View {
             }
             .navigationTitle("What's up for today?")
             .onAppear {
-                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: StatsRepository())
+                viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: statsRepository)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

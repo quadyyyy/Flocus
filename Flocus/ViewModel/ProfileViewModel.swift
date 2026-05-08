@@ -19,8 +19,6 @@ struct Achievement: Identifiable {
 }
 
 class ProfileViewModel: ObservableObject {
-    private let stats: StatsRepository
-
     @Published var completedTasks: Int = 0
     @Published var focusSessions: Int = 0
     @Published var streak: Int = 0
@@ -34,8 +32,7 @@ class ProfileViewModel: ObservableObject {
         ]
     }
     
-    init(stats: StatsRepository) {
-        self.stats = stats
+    init() {
         load()
     }
     

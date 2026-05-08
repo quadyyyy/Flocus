@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct FlocusApp: App {
+    @StateObject private var statsRepository = StatsRepository()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(statsRepository)
         }
         .modelContainer(for: TaskModel.self)
     }
