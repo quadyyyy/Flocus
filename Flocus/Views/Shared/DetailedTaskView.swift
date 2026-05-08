@@ -26,10 +26,10 @@ struct DetailedTaskView: View {
 
             Section("Tag") {
                 Picker("Tag", selection: $task.tag) {
-                    Text(Tags.none.rawValue).tag(Tags.none)
-                    Text(Tags.home.rawValue).tag(Tags.home)
-                    Text(Tags.work.rawValue).tag(Tags.work)
-                    Text(Tags.study.rawValue).tag(Tags.study)
+                    Text(Tags.none.label).tag(Tags.none)
+                    Text(Tags.home.label).tag(Tags.home)
+                    Text(Tags.work.label).tag(Tags.work)
+                    Text(Tags.study.label).tag(Tags.study)
                 }
                 .pickerStyle(.segmented)
             }

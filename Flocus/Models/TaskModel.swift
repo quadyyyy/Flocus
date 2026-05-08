@@ -10,10 +10,10 @@ import SwiftData
 import SwiftUI
 
 enum Tags: String, CaseIterable, Hashable, Codable {
-    case none = "🚫 None"
-    case home = "🏠 Home"
-    case work = "🫡 Work"
-    case study = "📚 Study"
+    case none
+    case home
+    case work
+    case study
     
     var color: Color {
         switch self {
@@ -21,6 +21,15 @@ enum Tags: String, CaseIterable, Hashable, Codable {
         case .home: .green
         case .work: .blue
         case .study: .orange
+        }
+    }
+    
+    var label: String {
+        switch self {
+        case .none: "🚫 None"
+        case .home: "🏠 Home"
+        case .work: "🫡 Work"
+        case .study: "📚 Study"
         }
     }
 }

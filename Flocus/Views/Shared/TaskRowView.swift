@@ -34,7 +34,7 @@ struct TaskRowView: View {
                 .foregroundStyle(task.dueDate < .now ? .red : .secondary)
             }
             Spacer()
-            Text("\(task.tag.rawValue)")
+            Text(task.tag.label)
                 .font(.caption)
                 .fontWeight(.medium)
                 .padding(.horizontal, 10)
