@@ -69,4 +69,5 @@ struct TodayView: View {
     context.insert(TaskModel(title: "Read Swift docs", details: "", dueDate: Date(), tag: .study))
     return TodayView()
         .modelContainer(container)
+        .environmentObject(StatsRepository())
 }

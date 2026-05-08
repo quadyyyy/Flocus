@@ -109,4 +109,5 @@ struct PomodoroView: View {
 
 #Preview {
     PomodoroView()
+        .environmentObject(StatsRepository())
 }

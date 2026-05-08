@@ -83,4 +83,5 @@ struct SelectedDateView: View {
     let tasks = try! context.fetch(FetchDescriptor<TaskModel>())
     return SelectedDateView(selectedDate: SelectedDate(date: today))
         .modelContainer(container)
+        .environmentObject(StatsRepository())
 }
