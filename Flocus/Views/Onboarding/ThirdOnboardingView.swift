@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ThirdOnboardingView: View {
-    @AppStorage("username") private var username = ""
+    @AppStorage(UserDefaultsKeys.username) private var username = ""
     @State private var showNext = false
     @FocusState private var isFocused: Bool
 

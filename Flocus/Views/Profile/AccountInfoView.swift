@@ -13,8 +13,8 @@ struct AccountInfoView: View {
     @EnvironmentObject private var statsRepository: StatsRepository
     
     @State private var alertIsPresented: Bool = false
-    @AppStorage("username") var username: String = "User"
-    @AppStorage("avatar") var avatar: String = "avatar1"
+    @AppStorage(UserDefaultsKeys.username) var username: String = "User"
+    @AppStorage(UserDefaultsKeys.avatar) var avatar: String = "avatar1"
     @State private var isSheetPresented: Bool = false
 
     var body: some View {

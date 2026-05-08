@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AvatarPickerView: View {
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("avatar") var avatar: String = "avatar1"
+    @AppStorage(UserDefaultsKeys.avatar) var avatar: String = "avatar1"
     let avatars: Array<String> = ["avatar1", "avatar2", "avatar3", "avatar4", "avatar5", "avatar6"]
     let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
 

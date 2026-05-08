@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct FourthOnboardingView: View {
-    @AppStorage("username") private var username = ""
-    @AppStorage("avatar") private var avatar = "avatar1"
-    @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
+    @AppStorage(UserDefaultsKeys.username) private var username = ""
+    @AppStorage(UserDefaultsKeys.avatar) private var avatar = "avatar1"
+    @AppStorage(UserDefaultsKeys.isOnboardingCompleted) var isOnboardingCompleted: Bool = false
 
     private let avatars = ["avatar1", "avatar2", "avatar3", "avatar4", "avatar5", "avatar6"]
 
