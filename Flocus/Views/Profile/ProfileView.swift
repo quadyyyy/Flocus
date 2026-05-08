@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
+    @EnvironmentObject private var statsRepository: StatsRepository
     
     
     var body: some View {
@@ -86,7 +87,7 @@ struct ProfileView: View {
                 .padding(.top, 8)
                 
             }
-            .onAppear { viewModel.load() }
+            .onAppear { viewModel.setup(statsRepository: statsRepository) }
             .navigationTitle("Account")
             .background(Color(.systemGroupedBackground))
         }
@@ -95,4 +96,5 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(StatsRepository())
 }

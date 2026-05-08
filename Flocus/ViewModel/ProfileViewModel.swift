@@ -23,6 +23,8 @@ class ProfileViewModel: ObservableObject {
     @Published var focusSessions: Int = 0
     @Published var streak: Int = 0
     
+    private var statsRepository: StatsRepositoryProtocol?
+    
     var achievements: [Achievement] {
         [
             Achievement(icon: "trophy.fill", iconColor: .yellow, title: "Centurion", description: "Complete 100 tasks", isAchieved: completedTasks >= 100),
@@ -32,15 +34,18 @@ class ProfileViewModel: ObservableObject {
         ]
     }
     
-    init() {
-        load()
-    }
+    init() {}
     
     var focusTimeFormatted: String {
         let minutes = focusSessions * 25
         let hours = minutes / 60
         let mins = minutes % 60
         return hours > 0 ? "\(hours)h \(mins)m" : "\(mins)m"
+    }
+    
+    func setup(statsRepository: StatsRepositoryProtocol) {
+        self.statsRepository = statsRepository
+        load()
     }
     
     func computeStreak(_ array: Array<DateComponents>) -> Int {
@@ -67,9 +72,9 @@ class ProfileViewModel: ObservableObject {
     }
 
     func load() {
-        completedTasks = UserDefaults.standard.integer(forKey: "completedTasksCount")
-        focusSessions = UserDefaults.standard.integer(forKey: "focusSessionsCount")
-        let dates = UserDefaults.standard.getArray(DateComponents.self, forKey: "streakDates")
+        completedTasks = statsRepository?.getCompletedTasksCount() ?? 0
+        focusSessions = statsRepository?.getFocusSessionsCount() ?? 0
+        let dates = statsRepository?.getStreakDates() ?? []
         streak = computeStreak(dates)
     }
 }

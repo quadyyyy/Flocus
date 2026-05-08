@@ -17,6 +17,9 @@ protocol StatsRepositoryProtocol {
     func resetAll()
     func addToArray(_ date: DateComponents)
     func deleteFromArray(_ date: DateComponents)
+    func getCompletedTasksCount() -> Int
+    func getFocusSessionsCount() -> Int
+    func getStreakDates() -> [DateComponents]
 }
 
 @MainActor
@@ -48,6 +51,18 @@ class StatsRepository: ObservableObject, StatsRepositoryProtocol {
 
     func deleteFromArray(_ date: DateComponents) {
         UserDefaults.standard.removeFromArray(date, forKey: streakDatesArrayKey)
+    }
+    
+    func getCompletedTasksCount() -> Int {
+        return UserDefaults.standard.integer(forKey: completedTasksKey)
+    }
+    
+    func getFocusSessionsCount() -> Int {
+        return UserDefaults.standard.integer(forKey: focusSessionsKey)
+    }
+    
+    func getStreakDates() -> [DateComponents] {
+        return UserDefaults.standard.getArray(DateComponents.self, forKey: streakDatesArrayKey)
     }
     
     func resetAll() {
