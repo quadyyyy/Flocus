@@ -17,6 +17,11 @@ struct TodayView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section {
+                    TodoCardView(tasks: viewModel.tasks, streak: viewModel.streak)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                }
                 ForEach(viewModel.tasks) { task in
                     NavigationLink(value: task) {
                         TaskRowView(task: task) {
@@ -28,6 +33,7 @@ struct TodayView: View {
                     indexSet.forEach { viewModel.deleteTask(viewModel.tasks[$0]) }
                 }
             }
+            .listSectionSpacing(.compact)
             .navigationTitle("What's up for today?")
             .onAppear {
                 viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: statsRepository)

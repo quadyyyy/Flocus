@@ -11,6 +11,7 @@ import SwiftData
 
 class TodayViewModel: ObservableObject {
     @Published var tasks: [TaskModel] = []
+    @Published var streak: Int = 0
     @Published var errorMessage: String? = nil
     private var repository: TaskRepositoryProtocol?
     private var statsRepository: StatsRepositoryProtocol?
@@ -62,9 +63,26 @@ class TodayViewModel: ObservableObject {
         do {
             let all = (try repository?.fetchAll()) ?? []
             tasks = all.filter(isVisibleToday)
+            streak = computeStreak(statsRepository?.getStreakDates() ?? [])
         } catch {
             errorMessage = "Failed to reload data"
         }
+    }
+
+    private func computeStreak(_ dates: [DateComponents]) -> Int {
+        let calendar = Calendar.current
+        let today = calendar.dateComponents([.year, .month, .day], from: .now)
+        let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: .now)!
+        var current = calendar.dateComponents([.year, .month, .day], from: yesterdayDate)
+        let dateSet = Set(dates)
+        var count = 0
+        while dateSet.contains(current) {
+            count += 1
+            let d = calendar.date(from: current)!
+            current = calendar.dateComponents([.year, .month, .day], from: calendar.date(byAdding: .day, value: -1, to: d)!)
+        }
+        if dateSet.contains(today) { count += 1 }
+        return count
     }
 
     private func isVisibleToday(_ task: TaskModel) -> Bool {
