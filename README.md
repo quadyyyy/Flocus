@@ -30,7 +30,7 @@ Flocus keeps it simple: plan your day, stay focused, and build a streak.
 
 ## Tech Stack
 
-`Swift` `SwiftUI` `SwiftData` `UserDefaults` `Swift Testing`
+`Swift` `SwiftUI` `UIKit` `SwiftData` `UserDefaults` `Swift Testing`
 
 **MVVM** - each screen has a dedicated ViewModel managing state and business logic.  
 **Repository pattern** - `TaskRepository` and `StatsRepository` abstract data sources behind protocols.  
