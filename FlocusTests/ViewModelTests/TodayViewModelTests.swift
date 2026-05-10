@@ -9,40 +9,6 @@ import Foundation
 import Testing
 @testable import Flocus
 
-// MARK: - Mocks
-
-class MockTaskRepository: TaskRepositoryProtocol {
-    var tasks: [TaskModel] = []
-    var shouldThrow: Bool = false
-
-    func fetchAll() throws -> [TaskModel] {
-        if shouldThrow { throw NSError(domain: "test", code: 0) }
-        return tasks
-    }
-    func add(_ task: TaskModel) throws { tasks.append(task) }
-    func delete(_ task: TaskModel) throws { tasks.remove(at: tasks.firstIndex(of: task)!) }
-    func save() throws { }
-    func deleteAll() { tasks = [] }
-}
-
-@MainActor
-class MockStatsRepository: StatsRepositoryProtocol {
-    var completedCount = 0
-    var streakDates: [DateComponents] = []
-
-    func incrementCompletedTask() { completedCount += 1 }
-    func decrementCompletedTask() { completedCount -= 1 }
-    func incrementFocusSession() {}
-    func resetAll() { completedCount = 0; streakDates = [] }
-    func addToArray(_ date: DateComponents) { streakDates.append(date) }
-    func deleteFromArray(_ date: DateComponents) { streakDates.removeAll { $0 == date } }
-    func getCompletedTasksCount() -> Int { completedCount }
-    func getFocusSessionsCount() -> Int { 0 }
-    func getStreakDates() -> [DateComponents] { streakDates }
-}
-
-
-
 @Suite("TodayViewModel Tests")
 @MainActor
 struct TodayViewModelTests {
