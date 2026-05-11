@@ -27,48 +27,53 @@ class StatsRepository: ObservableObject, StatsRepositoryProtocol {
     private let completedTasksKey = "completedTasksCount"
     private let focusSessionsKey = "focusSessionsCount"
     private let streakDatesArrayKey = "streakDates"
-    
+    private let defaults: UserDefaults
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+    }
+
     func incrementCompletedTask() {
-        let current = UserDefaults.standard.integer(forKey: completedTasksKey)
-        UserDefaults.standard.set(current + 1, forKey: completedTasksKey)
+        let current = defaults.integer(forKey: completedTasksKey)
+        defaults.set(current + 1, forKey: completedTasksKey)
     }
-    
+
     func decrementCompletedTask() {
-        let current = UserDefaults.standard.integer(forKey: completedTasksKey)
-        UserDefaults.standard.set(max(0, current - 1), forKey: completedTasksKey)
+        let current = defaults.integer(forKey: completedTasksKey)
+        defaults.set(max(0, current - 1), forKey: completedTasksKey)
     }
-    
+
     func incrementFocusSession() {
-        let current = UserDefaults.standard.integer(forKey: focusSessionsKey)
-        UserDefaults.standard.set(current + 1, forKey: focusSessionsKey)
+        let current = defaults.integer(forKey: focusSessionsKey)
+        defaults.set(current + 1, forKey: focusSessionsKey)
     }
-    
+
     func addToArray(_ date: DateComponents) {
-        let existing = UserDefaults.standard.getArray(DateComponents.self, forKey: streakDatesArrayKey)
+        let existing = defaults.getArray(DateComponents.self, forKey: streakDatesArrayKey)
         guard !existing.contains(date) else { return }
-        UserDefaults.standard.appendToArray(date, forKey: streakDatesArrayKey)
+        defaults.appendToArray(date, forKey: streakDatesArrayKey)
     }
 
     func deleteFromArray(_ date: DateComponents) {
-        UserDefaults.standard.removeFromArray(date, forKey: streakDatesArrayKey)
+        defaults.removeFromArray(date, forKey: streakDatesArrayKey)
     }
-    
+
     func getCompletedTasksCount() -> Int {
-        return UserDefaults.standard.integer(forKey: completedTasksKey)
+        return defaults.integer(forKey: completedTasksKey)
     }
-    
+
     func getFocusSessionsCount() -> Int {
-        return UserDefaults.standard.integer(forKey: focusSessionsKey)
+        return defaults.integer(forKey: focusSessionsKey)
     }
-    
+
     func getStreakDates() -> [DateComponents] {
-        return UserDefaults.standard.getArray(DateComponents.self, forKey: streakDatesArrayKey)
+        return defaults.getArray(DateComponents.self, forKey: streakDatesArrayKey)
     }
-    
+
     func resetAll() {
-        UserDefaults.standard.set(0, forKey: completedTasksKey)
-        UserDefaults.standard.set(0, forKey: focusSessionsKey)
-        UserDefaults.standard.removeObject(forKey: streakDatesArrayKey)
+        defaults.set(0, forKey: completedTasksKey)
+        defaults.set(0, forKey: focusSessionsKey)
+        defaults.removeObject(forKey: streakDatesArrayKey)
     }
 }
 
