@@ -38,6 +38,11 @@ class PomodoroViewModel: ObservableObject {
     @Published var isRunning: Bool = false
     @Published var completedSessions: Int = 0
     private var statsRepository: StatsRepositoryProtocol?
+    private let tickInterval: UInt64
+
+    init(tickInterval: UInt64 = 1_000_000_000) {
+        self.tickInterval = tickInterval
+    }
 
     func setup(statsRepository: StatsRepositoryProtocol) {
         self.statsRepository = statsRepository
@@ -61,7 +66,7 @@ class PomodoroViewModel: ObservableObject {
         timerTask = Task {
             while timeRemaining > 0 {
                 do {
-                    try await Task.sleep(nanoseconds: 1_000_000_000)
+                    try await Task.sleep(nanoseconds: tickInterval)
                 } catch {
                     return
                 }

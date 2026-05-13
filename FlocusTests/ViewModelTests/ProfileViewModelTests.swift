@@ -8,6 +8,8 @@
 import Testing
 @testable import Flocus
 
+
+@Suite("ProfileViewModel tests")
 @MainActor
 struct ProfileViewModelTests {
 
