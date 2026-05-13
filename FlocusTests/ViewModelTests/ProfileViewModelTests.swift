@@ -13,7 +13,7 @@ import Testing
 @MainActor
 struct ProfileViewModelTests {
 
-    @Test func focusTimeFormatted_returns_correct_minutes() {
+    @Test func test_focusTimeFormatted_returns_correct_minutes() {
         // given
         let vm = ProfileViewModel()
         
@@ -24,7 +24,7 @@ struct ProfileViewModelTests {
         #expect(vm.focusTimeFormatted == "25m")
     }
     
-    @Test func focusTimeFormatted_returns_correct_hours_and_minutes() {
+    @Test func test_focusTimeFormatted_returns_correct_hours_and_minutes() {
         // given
         let vm = ProfileViewModel()
         
@@ -35,7 +35,7 @@ struct ProfileViewModelTests {
         #expect(vm.focusTimeFormatted == "2h 5m")
     }
     
-    @Test func focusTimeFormatted_return_zero_when_no_sessions() {
+    @Test func test_focusTimeFormatted_return_zero_when_no_sessions() {
         // given
         let vm = ProfileViewModel()
         

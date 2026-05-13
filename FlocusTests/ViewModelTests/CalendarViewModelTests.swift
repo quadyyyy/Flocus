@@ -13,7 +13,7 @@ import Testing
 @MainActor
 struct CalendarViewModelTests {
 
-    @Test func reload_tasks_groups_by_date() async throws {
+    @Test func test_reload_tasks_groups_by_date() async throws {
         // given
         let vm = CalendarViewModel()
         let date = Date.now
@@ -27,7 +27,7 @@ struct CalendarViewModelTests {
         #expect(vm.tasks(for: comps).count == 1)
     }
     
-    @Test func tasks_noTasksForDate_returnsEmpty() {
+    @Test func test_tasks_noTasksForDate_returnsEmpty() {
         // given
         let vm = CalendarViewModel()
         let comps = Calendar.current.dateComponents([.year, .month, .day], from: .now)
@@ -39,7 +39,7 @@ struct CalendarViewModelTests {
         #expect(vm.tasks(for: comps).isEmpty)
     }
     
-    @Test func reloadTasks_differentDates_separateGroups() {
+    @Test func test_reloadTasks_differentDates_separateGroups() {
         // given
         let vm = CalendarViewModel()
         let date1 = Date.now

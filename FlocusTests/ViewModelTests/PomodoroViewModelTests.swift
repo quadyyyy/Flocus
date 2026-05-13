@@ -12,7 +12,7 @@ import Testing
 @MainActor
 struct PomodoroViewModelTests {
     
-    @Test func timeString_shows_correct_value() async throws {
+    @Test func test_timeString_shows_correct_value() async throws {
         // given
         let vm = PomodoroViewModel()
         vm.timeRemaining = 100
@@ -21,7 +21,7 @@ struct PomodoroViewModelTests {
         #expect(vm.timeString == "01:40")
     }
     
-    @Test func progress_shows_correct_value() async throws {
+    @Test func test_progress_shows_correct_value() async throws {
         // given
         let vm = PomodoroViewModel()
         vm.timeRemaining = 750
@@ -30,7 +30,7 @@ struct PomodoroViewModelTests {
         #expect(vm.progress == 0.5)
     }
 
-    @Test func after_focus_comes_short_break() async throws {
+    @Test func test_after_focus_comes_short_break() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -43,7 +43,7 @@ struct PomodoroViewModelTests {
         #expect(vm.phase == .shortBreak)
     }
     
-    @Test func after_four_session_comes_long_break() async throws {
+    @Test func test_after_four_session_comes_long_break() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.completedSessions = 3
@@ -57,7 +57,7 @@ struct PomodoroViewModelTests {
         #expect(vm.phase == .longBreak)
     }
     
-    @Test func after_short_break_comes_focus() async throws {
+    @Test func test_after_short_break_comes_focus() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -71,7 +71,7 @@ struct PomodoroViewModelTests {
         #expect(vm.phase == .focus)
     }
     
-    @Test func after_long_break_comes_focus() async throws {
+    @Test func test_after_long_break_comes_focus() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -85,7 +85,7 @@ struct PomodoroViewModelTests {
         #expect(vm.phase == .focus)
     }
     
-    @Test func start_function_guard_works() async throws {
+    @Test func test_start_function_guard_works() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -98,7 +98,7 @@ struct PomodoroViewModelTests {
         #expect(vm.isRunning == true)
     }
     
-    @Test func completedSessions_increments_after_focus() async throws {
+    @Test func test_completedSessions_increments_after_focus() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -111,7 +111,7 @@ struct PomodoroViewModelTests {
         #expect(vm.completedSessions == 1)
     }
     
-    @Test func pause_function_toggles_isRunning() async throws {
+    @Test func test_pause_function_toggles_isRunning() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         vm.timeRemaining = 3
@@ -124,7 +124,7 @@ struct PomodoroViewModelTests {
         #expect(vm.isRunning == false)
     }
     
-    @Test func reset_function_stops_timer_and_restores_time() {
+    @Test func test_reset_function_stops_timer_and_restores_time() {
         // given
         let vm = PomodoroViewModel()
         vm.timeRemaining = 100
@@ -138,7 +138,7 @@ struct PomodoroViewModelTests {
         #expect(vm.timeRemaining == PomodoroPhase.focus.duration)
     }
     
-    @Test func start_function_after_focus_session_increments_focus_sessions_count() async throws {
+    @Test func test_start_function_after_focus_session_increments_focus_sessions_count() async throws {
         // given
         let vm = PomodoroViewModel(tickInterval: 1_000_000)
         let repo = MockStatsRepository()

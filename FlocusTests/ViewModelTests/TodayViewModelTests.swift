@@ -13,7 +13,7 @@ import Testing
 @MainActor
 struct TodayViewModelTests {
 
-    @Test func todayTask_isVisible() {
+    @Test func test_todayTask_is_visible() {
         // Given
         let taskRepo = MockTaskRepository()
         let todayTask = TaskModel(title: "Task", details: "", dueDate: .now)
@@ -25,7 +25,7 @@ struct TodayViewModelTests {
         #expect(vm.tasks.count == 1)
     }
 
-    @Test func futureTask_isNotVisible() {
+    @Test func test_futureTask_is_not_visible() {
         // Given
         let taskRepo = MockTaskRepository()
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
@@ -37,7 +37,7 @@ struct TodayViewModelTests {
         #expect(vm.tasks.isEmpty)
     }
 
-    @Test func overdueIncompleteTask_isVisible() {
+    @Test func test_overdue_incomplet_task_is_visible() {
         // Given
         let taskRepo = MockTaskRepository()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
@@ -49,7 +49,7 @@ struct TodayViewModelTests {
         #expect(vm.tasks.count == 1)
     }
 
-    @Test func overdueCompletedTask_isNotVisible() {
+    @Test func test_overdueCompletedTask_is_not_visible() {
         // Given
         let taskRepo = MockTaskRepository()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
@@ -61,7 +61,7 @@ struct TodayViewModelTests {
         #expect(vm.tasks.isEmpty)
     }
 
-    @Test func streak_noDates_isZero() {
+    @Test func test_streak_no_dates_is_zero() {
         // Given
         let statsRepo = MockStatsRepository()
         statsRepo.streakDates = []
@@ -72,7 +72,7 @@ struct TodayViewModelTests {
         #expect(vm.streak == 0)
     }
 
-    @Test func streak_onlyToday_isOne() {
+    @Test func test_streak_only_today_is_one() {
         // Given
         let statsRepo = MockStatsRepository()
         statsRepo.streakDates = [Calendar.current.dateComponents([.year, .month, .day], from: .now)]
@@ -83,7 +83,7 @@ struct TodayViewModelTests {
         #expect(vm.streak == 1)
     }
 
-    @Test func streak_yesterdayAndToday_isTwo() {
+    @Test func test_streak_yesterday_and_today_is_two() {
         // Given
         let statsRepo = MockStatsRepository()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
@@ -98,7 +98,7 @@ struct TodayViewModelTests {
         #expect(vm.streak == 2)
     }
 
-    @Test func streak_onlyYesterday_isOne() {
+    @Test func test_streak_only_yesterday_is_one() {
         // Given
         let statsRepo = MockStatsRepository()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
@@ -110,7 +110,7 @@ struct TodayViewModelTests {
         #expect(vm.streak == 1)
     }
 
-    @Test func streak_gapInDates_countsOnlyContinuous() {
+    @Test func test_streak_gap_in_dates_counts_only_continuous() {
         // Given
         let statsRepo = MockStatsRepository()
         let threeDaysAgo = Calendar.current.date(byAdding: .day, value: -3, to: .now)!
@@ -127,7 +127,7 @@ struct TodayViewModelTests {
         #expect(vm.streak == 2)
     }
 
-    @Test func addTask_appearsInTasks() {
+    @Test func test_addTask_appears_in_tasks() {
         // Given
         let vm = TodayViewModel()
         vm.setup(repository: MockTaskRepository(), statsRepository: MockStatsRepository())
@@ -140,7 +140,7 @@ struct TodayViewModelTests {
     }
 
 
-    @Test func deleteTask_removedFromTasks() {
+    @Test func test_deleteTask_removed_from_tasks() {
         // Given
         let taskRepo = MockTaskRepository()
         let task = TaskModel(title: "Task", details: "", dueDate: .now)
@@ -155,7 +155,7 @@ struct TodayViewModelTests {
         #expect(vm.tasks.isEmpty)
     }
 
-    @Test func toggleTask_complete_incrementsStats() {
+    @Test func test_toggleTask_complete_increments_stats() {
         // Given
         let taskRepo = MockTaskRepository()
         let statsRepo = MockStatsRepository()
@@ -171,7 +171,7 @@ struct TodayViewModelTests {
         #expect(statsRepo.completedCount == 1)
     }
 
-    @Test func toggleTask_uncomplete_decrementsStats() {
+    @Test func test_toggleTask_uncomplete_decrements_stats() {
         // Given
         let taskRepo = MockTaskRepository()
         let statsRepo = MockStatsRepository()
@@ -187,7 +187,7 @@ struct TodayViewModelTests {
         #expect(statsRepo.completedCount == -1)
     }
 
-    @Test func toggleTask_complete_addsStreakDate() {
+    @Test func test_toggleTask_complete_adds_StreakDate() {
         // Given
         let taskRepo = MockTaskRepository()
         let statsRepo = MockStatsRepository()
@@ -203,7 +203,7 @@ struct TodayViewModelTests {
         #expect(!statsRepo.streakDates.isEmpty)
     }
 
-    @Test func fetchAll_throws_setsErrorMessage() {
+    @Test func test_fetchAll_throws_sets_ErrorMessage() {
         // Given
         let taskRepo = MockTaskRepository()
         taskRepo.shouldThrow = true

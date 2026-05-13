@@ -13,7 +13,7 @@ import Testing
 @MainActor
 struct SelectedDateViewModelTests {
 
-    @Test func selected_date_task_visible() {
+    @Test func test_selected_date_task_visible() {
         // given
         let taskRepo = MockTaskRepository()
         let selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
@@ -25,7 +25,7 @@ struct SelectedDateViewModelTests {
         #expect(vm.tasks.count == 1)
     }
     
-    @Test func not_selected_date_task_not_visible() {
+    @Test func test_not_selected_date_task_not_visible() {
         // given
         let taskRepo = MockTaskRepository()
         let notSelectedDate = Calendar.current.date(byAdding: .day, value: 2, to: .now)!
@@ -37,7 +37,7 @@ struct SelectedDateViewModelTests {
         #expect(vm.tasks.isEmpty)
     }
     
-    @Test func add_task_for_selected_date_appears() {
+    @Test func test_add_task_for_selected_date_appears() {
         // given
         let taskRepo = MockTaskRepository()
         let vm = SelectedDateViewModel()
