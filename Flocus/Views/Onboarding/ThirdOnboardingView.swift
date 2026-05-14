@@ -11,6 +11,8 @@ struct ThirdOnboardingView: View {
     @AppStorage(UserDefaultsKeys.username) private var username = ""
     @State private var showNext = false
     @FocusState private var isFocused: Bool
+    
+    let testingID = UIIdentifiers.ThirdOnboardingView.self
 
     private var canContinue: Bool {
         !username.trimmingCharacters(in: .whitespaces).isEmpty
@@ -38,6 +40,7 @@ struct ThirdOnboardingView: View {
                     .tracking(1)
 
                 TextField("e.g. Alex", text: $username)
+                    .accessibilityIdentifier(testingID.textField)
                     .font(.body)
                     .padding(.horizontal, 16)
                     .frame(height: 52)
@@ -78,6 +81,7 @@ struct ThirdOnboardingView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
+            .accessibilityIdentifier(testingID.continueButton)
             .disabled(!canContinue)
             .padding(.horizontal, 20)
             .padding(.bottom, 32)

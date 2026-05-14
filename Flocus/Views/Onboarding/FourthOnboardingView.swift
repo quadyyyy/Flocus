@@ -11,6 +11,8 @@ struct FourthOnboardingView: View {
     @AppStorage(UserDefaultsKeys.username) private var username = ""
     @AppStorage(UserDefaultsKeys.avatar) private var avatar = "avatar1"
     @AppStorage(UserDefaultsKeys.isOnboardingCompleted) var isOnboardingCompleted: Bool = false
+    
+    let testingID = UIIdentifiers.FourthOnboardingView.self
 
     private let avatars = ["avatar1", "avatar2", "avatar3", "avatar4", "avatar5", "avatar6"]
 
@@ -84,6 +86,7 @@ struct FourthOnboardingView: View {
                     .background(Color(red: 0.25, green: 0.47, blue: 0.85))
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
+            .accessibilityIdentifier(testingID.startFocusButton)
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
         }

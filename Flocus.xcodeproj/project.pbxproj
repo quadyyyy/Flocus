@@ -29,9 +29,22 @@
 		951106882F922BF500571CC2 /* FlocusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlocusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		953CFBBC2FB5E168009D492F /* Exceptions for "Flocus" folder in "FlocusUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Onboarding/UIIdentifiers.swift,
+			);
+			target = 951106872F922BF500571CC2 /* FlocusUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		951106732F922BF400571CC2 /* Flocus */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				953CFBBC2FB5E168009D492F /* Exceptions for "Flocus" folder in "FlocusUITests" target */,
+			);
 			path = Flocus;
 			sourceTree = "<group>";
 		};

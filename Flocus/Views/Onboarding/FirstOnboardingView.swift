@@ -40,7 +40,9 @@ private struct AppLogoView: View {
 
 struct FirstOnboardingView: View {
     @State private var showNext = false
-
+    
+    let testingID = UIIdentifiers.FirstOnboardingView.self
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -72,6 +74,7 @@ struct FirstOnboardingView: View {
                     .background(Color(red: 0.25, green: 0.47, blue: 0.85))
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
+            .accessibilityIdentifier(testingID.continueButton)
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
             .fullScreenCover(isPresented: $showNext) {
