@@ -13,6 +13,8 @@ struct TodayView: View {
     @EnvironmentObject private var statsRepository: StatsRepository
     @StateObject private var viewModel = TodayViewModel()
     @State private var isSheetPresented = false
+    
+    let testingID = UIIdentifiers.TodayView.self
         
     var body: some View {
         NavigationStack {
@@ -45,6 +47,7 @@ struct TodayView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .accessibilityIdentifier(testingID.newTaskButton)
                 }
             }
             .sheet(isPresented: $isSheetPresented) {

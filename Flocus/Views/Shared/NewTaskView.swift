@@ -17,6 +17,8 @@ struct NewTaskView: View {
     @State var dueDate: Date
     @State var selectedTag: Tags = .none
     
+    let testingID = UIIdentifiers.NewTaskView.self
+    
     var onSave: (TaskModel) -> Void
 
     
@@ -25,17 +27,21 @@ struct NewTaskView: View {
             Form {
                 Section("Essentials") {
                     TextField("Title", text: $title)
+                        .accessibilityIdentifier(testingID.taskTitleTextField)
                     TextField("Details", text: $description)
+                        .accessibilityIdentifier(testingID.taskDescriptionTextField)
                 }
                 
                 Section("Information") {
                     DatePicker("Due Date", selection: $dueDate)
+                        .accessibilityIdentifier(testingID.datePicker)
                 }
                 
                 Section("Tag") {
                     Picker("Tag", selection: $selectedTag) {
                         Text(Tags.none.label).tag(Tags.none)
                         Text(Tags.home.label).tag(Tags.home)
+                            .accessibilityIdentifier(testingID.tagPickerHomeButton)
                         Text(Tags.work.label).tag(Tags.work)
                         Text(Tags.study.label).tag(Tags.study)
                     }
@@ -60,6 +66,7 @@ struct NewTaskView: View {
                     } label: {
                         Image(systemName: "checkmark")
                     }
+                    .accessibilityIdentifier(testingID.saveButton)
                     .buttonStyle(.borderedProminent)
                     .tint(.blue)
                 }

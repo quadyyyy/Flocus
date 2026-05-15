@@ -17,6 +17,12 @@ struct FlocusApp: App {
             UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.isOnboardingCompleted)
             UserDefaults.standard.set("", forKey: UserDefaultsKeys.username)
         }
+        if CommandLine.arguments.contains("--skipOnboarding") {
+            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.isOnboardingCompleted)
+            if (UserDefaults.standard.string(forKey: UserDefaultsKeys.username) ?? "").isEmpty {
+                UserDefaults.standard.set("Tester", forKey: UserDefaultsKeys.username)
+            }
+        }
     }
 
     var body: some Scene {

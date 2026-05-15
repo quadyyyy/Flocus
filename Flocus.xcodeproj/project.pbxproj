@@ -33,7 +33,7 @@
 		953CFBBC2FB5E168009D492F /* Exceptions for "Flocus" folder in "FlocusUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Views/Onboarding/UIIdentifiers.swift,
+				Views/UIIdentifiers.swift,
 			);
 			target = 951106872F922BF500571CC2 /* FlocusUITests */;
 		};

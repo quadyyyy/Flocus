@@ -34,4 +34,16 @@ enum UIIdentifiers {
     enum FourthOnboardingView {
         static let startFocusButton: String = "FourthOnboardingView.startFocusButton"
     }
+    
+    enum TodayView {
+        static let newTaskButton: String = "TodayView.newTaskButton"
+    }
+    
+    enum NewTaskView {
+        static let taskTitleTextField: String = "NewTaskView.taskTitleTextField"
+        static let taskDescriptionTextField: String = "NewTaskView.taskDescriptionTextField"
+        static let tagPickerHomeButton: String = "NewTaskView.tagPicker.home"
+        static let datePicker: String = "NewTaskView.datePicker"
+        static let saveButton: String = "NewTaskView.saveButton"
+    }
 }
