@@ -9,45 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct DetailedTaskView: View {
-    @Environment(\.modelContext) var modelContext
-    @Environment(\.dismiss) private var dismiss
     @Bindable var task: TaskModel
-    
+
     var body: some View {
-        Form {
-            Section("Essentials") {
-                TextField("Title", text: $task.title)
-                TextField("Details", text: $task.details)
-            }
-
-            Section("Information") {
-                DatePicker("Due Date", selection: $task.dueDate)
-            }
-
-            Section("Tag") {
-                Picker("Tag", selection: $task.tag) {
-                    Text(Tags.none.label).tag(Tags.none)
-                    Text(Tags.home.label).tag(Tags.home)
-                    Text(Tags.work.label).tag(Tags.work)
-                    Text(Tags.study.label).tag(Tags.study)
-                }
-                .pickerStyle(.segmented)
+        ScrollView {
+            if #available(iOS 27.1, *) {
+                DetailedTaskPanel(task: task)
+                    .contentMargins(for: .container)
+            } else {
+                DetailedTaskPanel(task: task)
+                    .padding(20)
             }
         }
-        .navigationTitle(task.title)
+        .scrollDismissesKeyboard(.interactively)
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("Task details")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    try? modelContext.save()
-                    dismiss()
-                } label: {
-                    Image(systemName: "checkmark")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.blue)
-            }
-        }
     }
 }
 

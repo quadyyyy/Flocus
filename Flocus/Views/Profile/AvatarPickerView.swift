@@ -19,9 +19,9 @@ struct AvatarPickerView: View {
                 Image(avatar)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 150, height: 150)
                     .clipShape(Circle())
-                    .padding(.bottom, 150)
+                    .padding(.bottom, 50)
                 Text("Choose the avatar below")
                     .font(.headline)
                     .foregroundStyle(.secondary)
@@ -56,6 +56,15 @@ struct AvatarPickerView: View {
                 }
                 .navigationTitle("Avatar Selection")
                 .navigationBarTitleDisplayMode(.inline)
+                Text("or...")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 15)
+                Button {
+                    // открыть выбор в фото
+                } label: {
+                    Text("Choose image in photos")
+                }
             }
         }
     }
