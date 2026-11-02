@@ -15,8 +15,6 @@ struct TodayView: View {
     @State private var isSheetPresented = false
     @State private var selectedTask: TaskModel?
 
-    @ScaledMetric(relativeTo: .body) private var minimumPanelWidth = 300
-
     let testingID = UIIdentifiers.TodayView.self
 
     var body: some View {
@@ -38,12 +36,10 @@ struct TodayView: View {
         if #available(iOS 27.1, *) {
             ArrangementView {
                 tasksPanel
-                    .splitArrangementLayoutSize(minWidth: minimumPanelWidth)
                     .layoutPriority(1)
             } secondary: {
                 detailsPanel
                     .padding(.leading, 16)
-                    .splitArrangementLayoutSize(minWidth: minimumPanelWidth)
             }
             .arrangementViewStyle(.split.axes(.horizontal))
         } else {

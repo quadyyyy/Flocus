@@ -6,37 +6,25 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PomodoroView: View {
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var statsRepository: StatsRepository
     @StateObject private var viewModel = PomodoroViewModel()
-    @State private var showsTasks = false
-
-    @ScaledMetric(relativeTo: .body) private var minimumPanelWidth = 300
+    @State private var isNewTaskPresented = false
 
     var body: some View {
         NavigationStack {
             adaptiveLayout
-            .sheet(isPresented: $showsTasks) {
-                NavigationStack {
-                    taskPanel
-                        .navigationTitle("Tasks")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Close", systemImage: "xmark") {
-                                    showsTasks = false
-                                }
-                            }
-                        }
-                        .background(Color(.systemGroupedBackground))
+                .background(Color(.systemGroupedBackground).ignoresSafeArea())
+                .tint(.blue)
+                .navigationDestination(for: TaskModel.self) { task in
+                    DetailedTaskView(task: task)
                 }
-            }
-            .toolbarBackground(.hidden, for: .navigationBar)
-            .background(Color(.systemGroupedBackground))
         }
         .onAppear {
-            viewModel.setup(statsRepository: statsRepository)
+            viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: statsRepository)
         }
         .onChange(of: viewModel.phase) {
             viewModel.reset()
@@ -48,11 +36,9 @@ struct PomodoroView: View {
         if #available(iOS 27.1, *) {
             ArrangementView {
                 timerPanel
-                    .splitArrangementLayoutSize(minWidth: minimumPanelWidth)
                     .layoutPriority(1)
             } secondary: {
                 taskPanel
-                    .splitArrangementLayoutSize(minWidth: minimumPanelWidth)
             }
             .arrangementViewStyle(.split.axes(.horizontal))
         } else {
@@ -60,11 +46,6 @@ struct PomodoroView: View {
         }
     }
 
-    private var tasksButton: some View {
-        Button("Tasks", systemImage: "list.bullet.rectangle") {
-            showsTasks = true
-        }
-    }
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -81,49 +62,57 @@ struct PomodoroView: View {
     }
 
     private var taskPanel: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            Text("Tasks")
-                .font(.title3.bold())
-            ScrollView {
-                VStack(spacing: 12) {
-//                    placeholderTask("Write summary notes", tag: "Study", icon: "graduationcap.fill", color: .orange)
-//                    placeholderTask("Clean the apartment", tag: "Home", icon: "house.fill", color: .green)
-//                    placeholderTask("Review pull requests", tag: "Work", icon: "briefcase.fill", color: .blue)
+        VStack(spacing: 20) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Tasks")
+                    .font(.largeTitle.bold())
+                Spacer()
+                Button("New task", systemImage: "plus") {
+                    isNewTaskPresented = true
+                }
+                .font(.headline)
+                .foregroundStyle(.tint)
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+
+            List {
+                ForEach(viewModel.tasks) { task in
+                    NavigationLink(value: task) {
+                        TaskRowView(task: task) {
+                            viewModel.toggleTask(task)
+                        }
+                    }
+                }
+                .onDelete { indexSet in
+                    let tasksToDelete = indexSet.map { viewModel.tasks[$0] }
+                    for task in tasksToDelete {
+                        viewModel.deleteTask(task)
+                    }
                 }
             }
+            .listStyle(.insetGrouped)
+            .listSectionSpacing(.compact)
+            .scrollContentBackground(.hidden)
+            .contentMargins(.top, 0, for: .scrollContent)
         }
-        .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-
+        .background(Color(.systemGroupedBackground))
+        .sheet(isPresented: $isNewTaskPresented) {
+            NewTaskView(title: "", description: "", dueDate: Date()) { task in
+                viewModel.addTask(task)
+            }
+        }
+        .alert("Error", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } })
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.errorMessage ?? "")
+        }
     }
-
-//    private func placeholderTask(_ title: String, tag: String, icon: String, color: Color) -> some View {
-//        HStack(spacing: 18) {
-//            Image(systemName: icon)
-//                .font(.title2)
-//                .foregroundStyle(color)
-//                .frame(width: 32)
-//            VStack(alignment: .leading, spacing: 6) {
-//                Text(title)
-//                    .font(.body.weight(.medium))
-//                Text(tag)
-//                    .font(.caption)
-//                    .foregroundStyle(color)
-//                    .padding(.horizontal, 10)
-//                    .padding(.vertical, 3)
-//                    .background(color.opacity(0.14), in: Capsule())
-//            }
-//            Spacer(minLength: 4)
-//            Image(systemName: "circle")
-//                .font(.title3)
-//                .foregroundStyle(.tertiary)
-//        }
-//        .padding(18)
-//        .frame(maxWidth: .infinity, alignment: .leading)
-//        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18))
-//        .accessibilityElement(children: .combine)
-//        .accessibilityHint("Sample task")
-//    }
 
     private var timerPanel: some View {
         VStack(spacing: 20) {
@@ -138,6 +127,7 @@ struct PomodoroView: View {
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemGroupedBackground))
     }
 
     private func timerFace(diameter: CGFloat) -> some View {
@@ -161,6 +151,7 @@ struct PomodoroView: View {
                     .monospacedDigit()
                 Text(viewModel.isRunning ? "Stay with it" : "Ready when you are")
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
             .padding(24)
             .minimumScaleFactor(0.6)
@@ -190,9 +181,9 @@ struct PomodoroView: View {
             } label: {
                 Text("Reset")
                     .font(.headline)
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.tint)
                     .frame(minWidth: 100, minHeight: 56)
-                    .background(Color(.tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
+                    .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
             }
         }
         .buttonStyle(.plain)
@@ -201,5 +192,6 @@ struct PomodoroView: View {
 
 #Preview {
     PomodoroView()
+        .modelContainer(for: TaskModel.self, inMemory: true)
         .environmentObject(StatsRepository())
 }
