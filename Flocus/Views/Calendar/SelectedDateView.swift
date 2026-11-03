@@ -13,6 +13,7 @@ struct SelectedDateView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var statsRepository: StatsRepository
     var selectedDate: SelectedDate
+    var showsDismissButton = true
     @StateObject private var viewModel = SelectedDateViewModel()
     @State var isAddingTask = false
 
@@ -30,17 +31,28 @@ struct SelectedDateView: View {
                     indexSet.forEach { viewModel.deleteTask(viewModel.tasks[$0]) }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            .overlay {
+                if viewModel.tasks.isEmpty {
+                    ContentUnavailableView("No tasks", systemImage: "checklist",
+                                           description: Text("No tasks for this day. Tap + to add one."))
+                }
+            }
+            .toolbarBackground(Color(.systemGroupedBackground), for: .navigationBar)
             .navigationTitle(selectedDate.date.formatted(.dateTime.day().month(.wide)))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 viewModel.setup(repository: TaskRepository(context: modelContext), statsRepository: statsRepository, date: selectedDate.date)
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "multiply")
+                if showsDismissButton {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "multiply")
+                        }
                     }
                 }
 
@@ -52,10 +64,9 @@ struct SelectedDateView: View {
                     }
                 }
             }
-            .navigationDestination(isPresented: $isAddingTask) {
+            .sheet(isPresented: $isAddingTask) {
                 NewTaskView(title: "", description: "", dueDate: selectedDate.date) { task in
                     viewModel.addTask(task)
-                    isAddingTask = false
                 }
             }
             .navigationDestination(for: TaskModel.self) { task in

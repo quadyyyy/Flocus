@@ -15,6 +15,7 @@ struct CalendarView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UICalendarView {
         let calendarView = UICalendarView()
+        calendarView.backgroundColor = .clear
         calendarView.calendar = .current
         calendarView.locale = .current
         calendarView.fontDesign = .default
