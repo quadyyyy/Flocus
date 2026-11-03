@@ -5,6 +5,9 @@
 ## About
 **Flocus** is a lightweight iOS app for tracking tasks and building habits - without the clutter.
 
+> [!NOTE]
+> 🆕 **Flocus now supports iPhone Duo!**
+
 ## Screenshots
 
 <table>
